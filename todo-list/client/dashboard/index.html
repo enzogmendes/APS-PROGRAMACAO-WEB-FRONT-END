@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Minhas Tarefas</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="title">Minhas Tarefas</div>
+    <div class="top-actions">
+      <button id="logoutBtn" class="btn ghost">Sair</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="new-task card">
+      <h3>NOVA TAREFA</h3>
+      <form id="taskForm" class="task-form">
+        <input id="taskTitle" type="text" placeholder="O que você precisa fazer?" required>
+        <input id="taskDesc" type="text" placeholder="Descrição ou detalhes (opcional)">
+        <button class="btn primary" type="submit">Salvar</button>
+      </form>
+    </section>
+
+    <section class="tasks card">
+      <div id="tasksList" class="tasks-list">
+        <!-- tarefas serão inseridas aqui -->
+      </div>
+    </section>
+  </main>
+
+  <script src="../js/scripts.js"></script>
+  <script>
+    (async () => {
+      // redireciona se não autenticado
+      if (!isAuthenticated()) {
+        location.href = '../login/index.html';
+        return;
+      }
+
+      document.getElementById('logoutBtn').addEventListener('click', () => {
+        logout();
+      });
+
+      document.getElementById('taskForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const title = document.getElementById('taskTitle').value.trim();
+        const desc = document.getElementById('taskDesc').value.trim();
+        if (!title) return alert('Informe a tarefa');
+        try {
+          await createTask({ title, description: desc });
+          document.getElementById('taskTitle').value = '';
+          document.getElementById('taskDesc').value = '';
+          await refreshTasks();
+        } catch (err) {
+          alert(err.message || 'Erro ao criar tarefa');
+        }
+      });
+
+      await refreshTasks();
+    })();
+
+    // funções de ação de cada tarefa (editar/excluir) são injetadas pelo scripts.js na hora de renderizar
+  </script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cadastro — Minhas Tarefas</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <main class="split">
+    <section class="left">
+      <div class="brand">
+        <div class="icon">✓≡</div>
+        <h1>Pronto para começar?</h1>
+        <p>Crie sua conta e passe a controlar suas tarefas.</p>
+      </div>
+    </section>
+
+    <section class="right card">
+      <h2>Cadastro</h2>
+
+      <form id="registerForm" class="form">
+        <label class="field">
+          <span>E-mail</span>
+          <input id="r_email" type="email" required placeholder="seu@exemplo.com">
+        </label>
+
+        <label class="field">
+          <span>Senha</span>
+          <input id="r_password" type="password" required placeholder="••••••••">
+        </label>
+
+        <label class="field">
+          <span>Nome completo</span>
+          <input id="r_name" type="text" required placeholder="Seu nome">
+        </label>
+
+        <div class="actions">
+          <button type="submit" class="btn primary">Cadastrar</button>
+        </div>
+
+        <p class="small">Já possui conta? <a href="../login/index.html">Login</a></p>
+      </form>
+    </section>
+  </main>
+
+  <script src="../js/scripts.js"></script>
+  <script>
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('r_email').value.trim();
+      const senha = document.getElementById('r_password').value.trim();
+      const name = document.getElementById('r_name').value.trim();
+      try {
+        await registerUser({ email, password: senha, name });
+        alert('Cadastro realizado! Faça login.');
+        location.href = '../login/index.html';
+      } catch (err) {
+        alert(err.message || 'Erro ao cadastrar');
+      }
+    });
+  </script>
+</body>
+</html>

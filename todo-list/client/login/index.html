@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login — Minhas Tarefas</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <main class="split">
+    <section class="left">
+      <div class="brand">
+        <div class="icon">✓≡</div>
+        <h1>Pronto para começar?</h1>
+        <p>Organize seu dia — crie, edite e conclua tarefas com facilidade.</p>
+      </div>
+    </section>
+
+    <section class="right card">
+      <h2>Login</h2>
+
+      <form id="loginForm" class="form">
+        <label class="field">
+          <span>E-mail</span>
+          <input id="email" type="email" required placeholder="seu@exemplo.com">
+        </label>
+
+        <label class="field">
+          <span>Senha</span>
+          <input id="password" type="password" required placeholder="••••••••">
+        </label>
+
+        <div class="actions">
+          <button type="submit" class="btn primary">Entrar</button>
+        </div>
+
+        <p class="small">Não tem uma conta? <a href="../registro/index.html">Cadastre-se</a></p>
+      </form>
+    </section>
+  </main>
+
+  <script src="../js/scripts.js"></script>
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      const senha = document.getElementById('password').value.trim();
+      try {
+        await loginUser(email, senha);
+      } catch (err) {
+        alert(err.message || 'Erro ao logar');
+      }
+    });
+  </script>
+</body>
+</html>
