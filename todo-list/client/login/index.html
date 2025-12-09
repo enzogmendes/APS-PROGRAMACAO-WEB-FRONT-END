@@ -8,6 +8,8 @@
 </head>
 <body>
   <main class="split">
+    
+    <!-- Lado esquerdo: marca e apresentação -->
     <section class="left">
       <div class="brand">
         <div class="icon">✓≡</div>
@@ -16,25 +18,39 @@
       </div>
     </section>
 
+    <!-- Lado direito: formulário -->
     <section class="right card">
       <h2>Login</h2>
 
-      <form id="loginForm" class="form">
+      <form id="loginForm" class="form" autocomplete="off">
         <label class="field">
           <span>E-mail</span>
-          <input id="email" type="email" required placeholder="seu@exemplo.com">
+          <input 
+            id="email" 
+            type="email" 
+            required 
+            placeholder="seu@exemplo.com"
+          >
         </label>
 
         <label class="field">
           <span>Senha</span>
-          <input id="password" type="password" required placeholder="••••••••">
+          <input 
+            id="password" 
+            type="password" 
+            required 
+            placeholder="••••••••"
+          >
         </label>
 
         <div class="actions">
           <button type="submit" class="btn primary">Entrar</button>
         </div>
 
-        <p class="small">Não tem uma conta? <a href="../registro/index.html">Cadastre-se</a></p>
+        <p class="small">
+          Não tem uma conta? 
+          <a href="../registro/index.html">Cadastre-se</a>
+        </p>
       </form>
     </section>
   </main>
@@ -43,8 +59,15 @@
   <script>
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
+
       const email = document.getElementById('email').value.trim();
       const senha = document.getElementById('password').value.trim();
+
+      if (!email || !senha) {
+        alert('Preencha todos os campos.');
+        return;
+      }
+
       try {
         await loginUser(email, senha);
       } catch (err) {
