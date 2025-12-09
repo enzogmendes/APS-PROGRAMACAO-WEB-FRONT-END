@@ -8,6 +8,8 @@
 </head>
 <body>
   <main class="split">
+
+    <!-- Lado esquerdo -->
     <section class="left">
       <div class="brand">
         <div class="icon">✓≡</div>
@@ -16,30 +18,51 @@
       </div>
     </section>
 
+    <!-- Lado direito -->
     <section class="right card">
       <h2>Cadastro</h2>
 
-      <form id="registerForm" class="form">
+      <form id="registerForm" class="form" autocomplete="off">
+        
         <label class="field">
           <span>E-mail</span>
-          <input id="r_email" type="email" required placeholder="seu@exemplo.com">
+          <input 
+            id="r_email" 
+            type="email" 
+            required 
+            placeholder="seu@exemplo.com"
+          >
         </label>
 
         <label class="field">
           <span>Senha</span>
-          <input id="r_password" type="password" required placeholder="••••••••">
+          <input 
+            id="r_password" 
+            type="password" 
+            required 
+            placeholder="••••••••"
+          >
         </label>
 
         <label class="field">
           <span>Nome completo</span>
-          <input id="r_name" type="text" required placeholder="Seu nome">
+          <input 
+            id="r_name" 
+            type="text" 
+            required 
+            placeholder="Seu nome"
+          >
         </label>
 
         <div class="actions">
           <button type="submit" class="btn primary">Cadastrar</button>
         </div>
 
-        <p class="small">Já possui conta? <a href="../login/index.html">Login</a></p>
+        <p class="small">
+          Já possui conta? 
+          <a href="../login/index.html">Login</a>
+        </p>
+
       </form>
     </section>
   </main>
@@ -48,9 +71,16 @@
   <script>
     document.getElementById('registerForm').addEventListener('submit', async (e) => {
       e.preventDefault();
+
       const email = document.getElementById('r_email').value.trim();
       const senha = document.getElementById('r_password').value.trim();
       const name = document.getElementById('r_name').value.trim();
+
+      if (!email || !senha || !name) {
+        alert('Preencha todos os campos.');
+        return;
+      }
+
       try {
         await registerUser({ email, password: senha, name });
         alert('Cadastro realizado! Faça login.');
