@@ -2,67 +2,138 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8" />
+
+  <!-- Ajuste para deixar o layout responsivo -->
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+
   <title>Minhas Tarefas</title>
+
+  <!-- CSS principal -->
   <link rel="stylesheet" href="../css/style.css">
 </head>
+
 <body>
+
+  <!-- =========================================================
+       TOPBAR (Título + Botão de Sair)
+       ========================================================= -->
   <header class="topbar">
     <div class="title">Minhas Tarefas</div>
+
     <div class="top-actions">
+      <!-- Botão responsável por encerrar a sessão do usuário -->
       <button id="logoutBtn" class="btn ghost">Sair</button>
     </div>
   </header>
 
+  <!-- =========================================================
+       CONTEÚDO PRINCIPAL
+       ========================================================= -->
   <main class="container">
+
+    <!-- ============================
+         FORMULÁRIO DE NOVA TAREFA
+         ============================ -->
     <section class="new-task card">
       <h3>NOVA TAREFA</h3>
+
+      <!-- Formulário de criação -->
       <form id="taskForm" class="task-form">
-        <input id="taskTitle" type="text" placeholder="O que você precisa fazer?" required>
-        <input id="taskDesc" type="text" placeholder="Descrição ou detalhes (opcional)">
+        <!-- Título da tarefa (obrigatório) -->
+        <input
+          id="taskTitle"
+          type="text"
+          placeholder="O que você precisa fazer?"
+          required
+        >
+
+        <!-- Descrição adicional da tarefa -->
+        <input
+          id="taskDesc"
+          type="text"
+          placeholder="Descrição ou detalhes (opcional)"
+        >
+
+        <!-- Botão salvar -->
         <button class="btn primary" type="submit">Salvar</button>
       </form>
     </section>
 
+    <!-- ============================
+         LISTA DE TAREFAS
+         ============================ -->
     <section class="tasks card">
+
+      <!-- Container onde as tarefas serão inseridas via JS -->
       <div id="tasksList" class="tasks-list">
-        <!-- tarefas serão inseridas aqui -->
+        <!-- tarefas serão inseridas aqui dinamicamente -->
       </div>
+
     </section>
   </main>
 
+  <!-- Scripts principais -->
   <script src="../js/scripts.js"></script>
+
+  <!-- =========================================================
+       SCRIPT DE CONTROLE DA PÁGINA
+       Autenticação, carregamento e criação de tarefas
+       ========================================================= -->
   <script>
     (async () => {
-      // redireciona se não autenticado
+
+      /* -----------------------------------------
+         VERIFICA SE O USUÁRIO ESTÁ LOGADO
+      ----------------------------------------- */
       if (!isAuthenticated()) {
-        location.href = '../login/index.html';
+        location.href = '../login/index.html'; // redireciona se não estiver logado
         return;
       }
 
+      /* -----------------------------------------
+         EVENTO: BOTÃO DE SAIR
+      ----------------------------------------- */
       document.getElementById('logoutBtn').addEventListener('click', () => {
-        logout();
+        logout(); // função definida em scripts.js
       });
 
+      /* -----------------------------------------
+         EVENTO: CRIAR NOVA TAREFA
+      ----------------------------------------- */
       document.getElementById('taskForm').addEventListener('submit', async (e) => {
         e.preventDefault();
+
         const title = document.getElementById('taskTitle').value.trim();
-        const desc = document.getElementById('taskDesc').value.trim();
-        if (!title) return alert('Informe a tarefa');
+        const desc  = document.getElementById('taskDesc').value.trim();
+
+        if (!title) {
+          return alert('Informe a tarefa'); // validação básica
+        }
+
         try {
+          // cria nova tarefa
           await createTask({ title, description: desc });
+
+          // limpa os campos depois de salvar
           document.getElementById('taskTitle').value = '';
           document.getElementById('taskDesc').value = '';
+
+          // atualiza a lista
           await refreshTasks();
         } catch (err) {
           alert(err.message || 'Erro ao criar tarefa');
         }
       });
 
+      /* -----------------------------------------
+         CARREGA TODAS AS TAREFAS AO ABRIR A PÁGINA
+      ----------------------------------------- */
       await refreshTasks();
     })();
 
-    // funções de ação de cada tarefa (editar/excluir) são injetadas pelo scripts.js na hora de renderizar
+    // OBS: As funções de editar/excluir tarefa são inseridas dinamicamente
+    // pelo scripts.js no momento da renderização.
   </script>
+
 </body>
 </html>
